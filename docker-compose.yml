@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  cms:
+    image: windows-docker-compose-cms:latest
+#    build:
+#      context: .
+    isolation: 'hyperv'
+    container_name: cms-container
+    environment:
+      MYSQL_ROOT_PASSWORD: "zzy9527"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "3306:3306"
+    volumes:
+      - ./data/mysql:c:/mysql8/data
+      - ./conf/mysql:c:/myconf
+      - ./www:c:/www
+      - ./log/apache:c:/Apache24/logs
+      - ./conf/apache:c:/Apache24/conf
+    networks:
+      - default
+
+networks:
+  default:
+#    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.0.0/24
+
